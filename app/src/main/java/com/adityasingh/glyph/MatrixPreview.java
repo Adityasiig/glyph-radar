@@ -7,37 +7,34 @@ import android.util.AttributeSet;
 import android.view.View;
 
 /**
- * Draws {@link RadarRenderer} on screen as a grid of dots.
+ * Draws a {@link Renderer} on screen as a grid of dots.
  *
- * The Glyph panel is on the back of the phone and only lights up once
- * the whole chain works, which makes "nothing happened" impossible to
+ * The Glyph panel is on the back of the phone and only lights once the
+ * whole chain works, which makes "nothing happened" impossible to
  * diagnose. This runs the identical renderer on the front display, so
  * a broken animation and a broken Glyph connection look different.
  */
 public class MatrixPreview extends View {
 
+    /** Fallback when the SDK cannot name the panel: the (4a) Pro's. */
+    private static final int DEFAULT_SIZE = 13;
+
     private final Paint dot = new Paint(Paint.ANTI_ALIAS_FLAG);
-    private RadarRenderer renderer;
-    private int size;
-    private long startedAt;
+    private Renderer renderer;
+    private int size = DEFAULT_SIZE;
+    private long startedAt = System.currentTimeMillis();
 
     public MatrixPreview(Context context, AttributeSet attrs) {
         super(context, attrs);
-        setGrid(Glyph25111pLength());
+        renderer = new RadarRenderer(size);
     }
 
-    /**
-     * The preview must work on any phone, including one with no Glyph
-     * panel, so it does not ask the SDK for a size.
-     */
-    private static int Glyph25111pLength() {
-        return 13;
-    }
-
-    void setGrid(int n) {
-        size = n;
-        renderer = new RadarRenderer(n);
+    /** Switches which toy is previewed, restarting its clock. */
+    void show(Toys.Toy toy, int panelSize) {
+        size = panelSize > 0 ? panelSize : DEFAULT_SIZE;
+        renderer = toy.factory.create(size);
         startedAt = System.currentTimeMillis();
+        invalidate();
     }
 
     @Override
@@ -54,10 +51,9 @@ public class MatrixPreview extends View {
 
         for (int y = 0; y < size; y++) {
             for (int x = 0; x < size; x++) {
-                int v = px[y * size + x];
                 // Floor the unlit dots so the panel's shape stays
                 // visible rather than vanishing into the background.
-                int a = Math.max(v, 18);
+                int a = Math.max(px[y * size + x], 18);
                 dot.setColor(0xFFFFFF | (a << 24));
                 canvas.drawCircle(
                         ox + cell * x + cell / 2f,

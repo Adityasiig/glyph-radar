@@ -23,7 +23,8 @@
         android:theme="@style/Theme.AppCompat.DayNight.NoActionBar">
 
         <!-- Issued per package name from Nothing's developer programme.
-             Registration fails without it, so the toy never draws. -->
+             setMatrixFrame does not check the authorisation flag, so the
+             toys draw without one; the log reports a rejected key. -->
         <meta-data
             android:name="NothingKey"
             android:value="@string/nothing_api_key" />
@@ -37,22 +38,108 @@
             </intent-filter>
         </activity>
 
-        <!-- The Glyph Toy itself. Nothing's launcher discovers this
-             through the TOY action and lists it in Glyph Toys. -->
+        <!-- One service per toy. Nothing's launcher discovers each
+             through the TOY action and lists them separately, so all
+             six show up in Glyph Toys from this single app. -->
+
         <service
             android:name=".RadarToyService"
             android:exported="true">
             <intent-filter>
                 <action android:name="com.nothing.glyph.TOY" />
             </intent-filter>
-
             <meta-data
                 android:name="com.nothing.glyph.toy.name"
-                android:resource="@string/toy_name" />
+                android:resource="@string/toy_radar" />
             <meta-data
                 android:name="com.nothing.glyph.toy.image"
-                android:resource="@drawable/toy_preview" />
+                android:resource="@drawable/toy_radar" />
             <!-- The (4a) Pro is AOD-only; it has no Glyph Touch. -->
+            <meta-data
+                android:name="com.nothing.glyph.toy.aod_support"
+                android:value="1" />
+        </service>
+
+        <service
+            android:name=".EqualiserToyService"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.nothing.glyph.TOY" />
+            </intent-filter>
+            <meta-data
+                android:name="com.nothing.glyph.toy.name"
+                android:resource="@string/toy_equaliser" />
+            <meta-data
+                android:name="com.nothing.glyph.toy.image"
+                android:resource="@drawable/toy_equaliser" />
+            <meta-data
+                android:name="com.nothing.glyph.toy.aod_support"
+                android:value="1" />
+        </service>
+
+        <service
+            android:name=".OrbitToyService"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.nothing.glyph.TOY" />
+            </intent-filter>
+            <meta-data
+                android:name="com.nothing.glyph.toy.name"
+                android:resource="@string/toy_orbit" />
+            <meta-data
+                android:name="com.nothing.glyph.toy.image"
+                android:resource="@drawable/toy_orbit" />
+            <meta-data
+                android:name="com.nothing.glyph.toy.aod_support"
+                android:value="1" />
+        </service>
+
+        <service
+            android:name=".WaveformToyService"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.nothing.glyph.TOY" />
+            </intent-filter>
+            <meta-data
+                android:name="com.nothing.glyph.toy.name"
+                android:resource="@string/toy_waveform" />
+            <meta-data
+                android:name="com.nothing.glyph.toy.image"
+                android:resource="@drawable/toy_waveform" />
+            <meta-data
+                android:name="com.nothing.glyph.toy.aod_support"
+                android:value="1" />
+        </service>
+
+        <service
+            android:name=".PulseToyService"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.nothing.glyph.TOY" />
+            </intent-filter>
+            <meta-data
+                android:name="com.nothing.glyph.toy.name"
+                android:resource="@string/toy_pulse" />
+            <meta-data
+                android:name="com.nothing.glyph.toy.image"
+                android:resource="@drawable/toy_pulse" />
+            <meta-data
+                android:name="com.nothing.glyph.toy.aod_support"
+                android:value="1" />
+        </service>
+
+        <service
+            android:name=".RainToyService"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.nothing.glyph.TOY" />
+            </intent-filter>
+            <meta-data
+                android:name="com.nothing.glyph.toy.name"
+                android:resource="@string/toy_rain" />
+            <meta-data
+                android:name="com.nothing.glyph.toy.image"
+                android:resource="@drawable/toy_rain" />
             <meta-data
                 android:name="com.nothing.glyph.toy.aod_support"
                 android:value="1" />
