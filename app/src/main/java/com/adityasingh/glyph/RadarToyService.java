@@ -45,9 +45,13 @@ public class RadarToyService extends Service {
                 String device = Common.is23112()
                         ? Glyph.DEVICE_23112
                         : Glyph.DEVICE_25111p;
+                // register() reports whether the system authorised the
+                // app key. setMatrixFrame does not itself check that
+                // flag, so draw anyway and let the log say if the key
+                // was rejected, rather than silently doing nothing.
                 if (!manager.register(device)) {
-                    Log.e(TAG, "register failed for " + device);
-                    return;
+                    Log.w(TAG, "not authorised for " + device
+                            + "; check the NothingKey meta-data");
                 }
                 // Ask the SDK rather than hardcoding, so one renderer
                 // fills either panel.

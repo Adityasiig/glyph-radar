@@ -40,15 +40,18 @@ APK has to be built locally, which takes three steps.
 ./fetch-sdk.sh
 ```
 
-**2. Add an API key.** Nothing issues these per package name, and
-registration fails without one, so the toy would install but never
-draw. Request a key for `com.adityasingh.glyph` from Nothing's
-developer programme and put it in
-`app/src/main/res/values/strings.xml`:
+**2. Add an API key.** Nothing issues these per package name. Request
+one for `com.adityasingh.glyph` from Nothing's developer programme and
+put it in `app/src/main/res/values/strings.xml`:
 
 ```xml
 <string name="nothing_api_key">your-key-here</string>
 ```
+
+Worth trying without one first. `register()` returns false when the
+key is not authorised, but `setMatrixFrame` does not check that flag,
+so the toy may well draw anyway; the log will say if the key was
+rejected.
 
 **3. Build and install.** Needs a JDK 17 and the Android SDK.
 
