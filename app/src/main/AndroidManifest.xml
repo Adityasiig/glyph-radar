@@ -3,6 +3,18 @@
 
     <uses-permission android:name="com.nothing.ketchum.permission.ENABLE" />
 
+    <!-- Android 11+ hides other packages unless they are declared here.
+         GlyphMatrixManager.init() binds to com.nothing.thirdparty and
+         throws away the bindService() result, so without this the bind
+         fails silently: onServiceConnected never fires and the toy
+         draws nothing at all, with no error anywhere. -->
+    <queries>
+        <package android:name="com.nothing.thirdparty" />
+        <intent>
+            <action android:name="com.nothing.thirdparty.bind_glyphservice" />
+        </intent>
+    </queries>
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"

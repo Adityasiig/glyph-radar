@@ -2,8 +2,12 @@
 <resources>
     <string name="app_name">Glyph Radar</string>
     <string name="toy_name">Radar</string>
-    <string name="status_connecting">Add \"Radar\" in Settings, Glyph Interface, Glyph Toys.</string>
+    <string name="status_checking">Checking…</string>
+    <string name="status_connecting">Add \"Radar\" in Settings, Glyph Interface, Glyph Toys, then hold the Glyph button on the back to cycle to it.</string>
     <string name="status_unsupported">Needs a Nothing Phone (4a) Pro or Phone (3).</string>
-    <!-- Replace with the key issued for this package from nothing.tech. -->
+    <string name="status_no_service">The Glyph system service did not answer. Reboot once; if it still fails the ROM does not expose it to third party apps.</string>
+    <string name="preview_label">Preview of what the back panel draws. If this animates, the renderer works and any problem is in the Glyph connection.</string>
+    <!-- Nothing issues these per package. setMatrixFrame does not check
+         the authorisation flag, so the toy draws without one. -->
     <string name="nothing_api_key">REPLACE_WITH_YOUR_NOTHING_API_KEY</string>
 </resources>
