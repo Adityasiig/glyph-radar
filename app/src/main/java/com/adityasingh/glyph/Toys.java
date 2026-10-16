@@ -24,11 +24,11 @@ final class Toys {
     }
 
     static final Toy[] ALL = {
-            new Toy(R.string.toy_radar, RadarRenderer::new),
-            new Toy(R.string.toy_equaliser, EqualiserRenderer::new),
-            new Toy(R.string.toy_orbit, OrbitRenderer::new),
-            new Toy(R.string.toy_waveform, WaveformRenderer::new),
-            new Toy(R.string.toy_pulse, PulseRenderer::new),
+            new Toy(R.string.toy_bars, BarsRenderer::new),
+            new Toy(R.string.toy_bloom, BloomRenderer::new),
+            new Toy(R.string.toy_scan, ScanRenderer::new),
+            new Toy(R.string.toy_heart, HeartRenderer::new),
+            new Toy(R.string.toy_spin, SpinRenderer::new),
             new Toy(R.string.toy_rain, RainRenderer::new)
     };
 

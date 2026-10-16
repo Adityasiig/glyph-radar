@@ -32,10 +32,14 @@ public abstract class ToyService extends Service {
 
     private static final String TAG = "GlyphToy";
 
-    /** ~20fps. The panel cannot usefully go faster and it costs power. */
-    private static final long FRAME_MS = 50L;
+    /**
+     * ~11fps. These designs move in whole pixels, so there is nothing
+     * between one step and the next to draw; pushing 20fps just sent
+     * the same frame twice and burned power doing it.
+     */
+    private static final long FRAME_MS = 90L;
     /** AOD must be cheap, so slow right down when the screen is off. */
-    private static final long FRAME_MS_AOD = 200L;
+    private static final long FRAME_MS_AOD = 250L;
 
     /** Builds this toy's animation for a panel {@code size} wide. */
     protected abstract Renderer createRenderer(int size);

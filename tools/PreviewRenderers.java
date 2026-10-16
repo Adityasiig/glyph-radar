@@ -1,32 +1,21 @@
 public class Sim {
-    static String[] NAMES = {"RADAR","EQUALISER","ORBIT","WAVEFORM","PULSE","RAIN"};
-    static Renderer mk(int i,int s){
-        switch(i){
-            case 0: return new RadarRenderer(s);
-            case 1: return new EqualiserRenderer(s);
-            case 2: return new OrbitRenderer(s);
-            case 3: return new WaveformRenderer(s);
-            case 4: return new PulseRenderer(s);
-            default: return new RainRenderer(s);
-        }
-    }
+    static String[] N={"BARS","BLOOM","SCAN","HEART","SPIN","RAIN"};
+    static Renderer mk(int i,int s){switch(i){
+        case 0:return new BarsRenderer(s);case 1:return new BloomRenderer(s);
+        case 2:return new ScanRenderer(s);case 3:return new HeartRenderer(s);
+        case 4:return new SpinRenderer(s);default:return new RainRenderer(s);}}
     public static void main(String[] a){
-        int S=13;
-        float[] ts={0.4f,1.9f,3.3f};
+        int S = a.length>0 ? Integer.parseInt(a[0]) : 13;
+        float[] ts={0.3f,1.0f,1.8f};
         for(int i=0;i<6;i++){
-            Renderer r=mk(i,S);
-            System.out.println("\n##### "+NAMES[i]+" #####");
+            System.out.println("\n##### "+N[i]+" #####");
             for(float t:ts){
-                int[] px=r.render(t);
-                int lit=0; long sum=0; int mx=0;
-                StringBuilder[] rows=new StringBuilder[S];
-                for(int y=0;y<S;y++){rows[y]=new StringBuilder();
+                int[] px=mk(i,S).render(t);
+                System.out.println("t="+t);
+                for(int y=0;y<S;y++){StringBuilder sb=new StringBuilder();
                     for(int x=0;x<S;x++){int v=px[y*S+x];
-                        sum+=v; if(v>40)lit++; if(v>mx)mx=v;
-                        rows[y].append(v>200?"##":v>130?"++":v>70?"::":v>25?"..":"  ");
-                    }}
-                System.out.println("t="+t+"  lit="+lit+" max="+mx+" mean="+(sum/(S*S)));
-                for(StringBuilder sb:rows) System.out.println(sb);
+                        sb.append(v>200?"##":v>130?"++":v>60?"::":v>10?"..":"  ");}
+                    System.out.println(sb);}
             }
         }
     }

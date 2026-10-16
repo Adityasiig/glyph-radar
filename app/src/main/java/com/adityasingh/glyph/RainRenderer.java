@@ -1,50 +1,47 @@
 package com.adityasingh.glyph;
 
 /**
- * Columns of light falling down the panel with trailing tails.
+ * Columns of light falling with trailing tails.
  *
- * Built for 13x13: it works per column on the pixel grid instead of
- * drawing a shape and sampling it, so every pixel is deliberate and
- * nothing is lost to rounding. Each column gets its own speed and
- * offset from a fixed hash, which gives a non repeating pattern with
- * no stored state and no randomness, so frames stay reproducible.
+ * Column aligned motion is native to the grid: a drop is one pixel
+ * stepping down one row at a time, so there is nothing to round and
+ * the fall is perfectly even. Each column gets its own speed and
+ * offset from a fixed hash, giving a non repeating pattern with no
+ * stored state, so frames stay reproducible for the checks in tools/.
  */
 public final class RainRenderer implements Renderer {
 
-    /** Tail length in pixels. */
-    private static final float TAIL = 4.5f;
+    /** Tail length in whole pixels. */
+    private static final int TAIL = 5;
 
-    private final int size;
-    private final Paint13 p;
+    private final Grid g;
 
     public RainRenderer(int size) {
-        this.size = size;
-        this.p = new Paint13(size);
+        this.g = new Grid(size);
     }
 
     @Override
     public int[] render(float t) {
-        p.clear();
-        float span = size + TAIL;
+        g.clear();
+        int S = g.size();
+        int span = S + TAIL;
 
-        for (int x = 0; x < size; x++) {
-            // Deterministic per column variation, so the columns drift
-            // apart over time rather than marching in step.
-            float speed = 2.6f + hash(x) * 3.4f;
-            float offset = hash(x * 7 + 1) * span;
-            float head = ((t * speed + offset) % span);
+        for (int x = 0; x < S; x++) {
+            // Whole pixel steps, so a drop never sits between rows.
+            float speed = 6f + hash(x) * 7f;
+            int head = (int) (t * speed + hash(x * 7 + 1) * span) % span;
 
-            for (int y = 0; y < size; y++) {
-                float behind = head - y;
-                if (behind < 0f || behind > TAIL) continue;
-                // Brightest at the head, fading along the tail.
-                float v = 1f - behind / TAIL;
-                p.lite(x, y, v * v);
+            for (int i = 0; i <= TAIL; i++) {
+                int y = head - i;
+                if (y < 0 || y >= S) continue;
+                int v = i == 0 ? Grid.MAX
+                        : i == 1 ? Grid.HIGH
+                        : i <= 3 ? Grid.MID : Grid.DIM;
+                g.set(x, y, v);
             }
         }
 
-        p.clipToCircle();
-        return p.out();
+        return g.out();
     }
 
     /** Stable pseudo random in 0..1, so frames are reproducible. */
