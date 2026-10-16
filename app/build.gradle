@@ -9,8 +9,8 @@ android {
         // The Glyph SDK needs Android 14 or newer.
         minSdk 34
         targetSdk 34
-        versionCode 2
-        versionName "1.1"
+        versionCode 3
+        versionName "1.2"
     }
 
     signingConfigs {

@@ -1,13 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Glyph Radar</string>
-    <string name="toy_name">Radar</string>
+
+    <!-- Shown in the Glyph Toys picker, one per service. -->
+    <string name="toy_radar">Radar</string>
+    <string name="toy_equaliser">Equaliser</string>
+    <string name="toy_orbit">Orbit</string>
+    <string name="toy_waveform">Waveform</string>
+    <string name="toy_pulse">Pulse</string>
+    <string name="toy_rain">Rain</string>
+
     <string name="status_checking">Checking…</string>
-    <string name="status_connecting">Add \"Radar\" in Settings, Glyph Interface, Glyph Toys, then hold the Glyph button on the back to cycle to it.</string>
+    <string name="status_connecting">Add these in Settings, Glyph Interface, Glyph Toys, then hold the Glyph button on the back to cycle between them.</string>
     <string name="status_unsupported">Needs a Nothing Phone (4a) Pro or Phone (3).</string>
     <string name="status_no_service">The Glyph system service did not answer. Reboot once; if it still fails the ROM does not expose it to third party apps.</string>
-    <string name="preview_label">Preview of what the back panel draws. If this animates, the renderer works and any problem is in the Glyph connection.</string>
+    <string name="preview_label">Tap a row to preview it here. This is what the back panel draws, so if it animates the renderer works and any problem is in the Glyph connection.</string>
+
     <!-- Nothing issues these per package. setMatrixFrame does not check
-         the authorisation flag, so the toy draws without one. -->
+         the authorisation flag, so the toys draw without one. -->
     <string name="nothing_api_key">REPLACE_WITH_YOUR_NOTHING_API_KEY</string>
 </resources>

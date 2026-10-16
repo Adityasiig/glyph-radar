@@ -1,8 +1,8 @@
 # Glyph Radar
 
-The portfolio's hero radar as a Glyph Toy for the Nothing Phone (4a)
-Pro. The same sweep that runs in the website hero, drawn on the Glyph
-Matrix on the back of the phone.
+Six Glyph Toys for the Nothing Phone (4a) Pro, in one app. Four are
+the circular instruments from the website hero, redrawn for the Glyph
+Matrix; two are designed for the panel itself.
 
 ## About Dot HUB
 
@@ -11,21 +11,42 @@ Explore tab linking to other people's. You cannot hand Dot HUB an APK
 and have it adopt it. A toy is its own app that registers a service
 with Nothing's launcher, which is what this project is.
 
-So the install route is: build this APK, install it, and the toy shows
-up in the system Glyph Toys list alongside anything Dot HUB installed.
+So the install route is: install this APK and its toys show up in the
+system Glyph Toys list alongside anything Dot HUB installed.
 
-## What it draws
+## The toys
 
-A direct port of the canvas renderer on the site: two polar rings plus
-cross hairs, an arm sweeping once every ~7 seconds with a trail that
-fades behind it, and four blips that flare as the arm crosses them.
+Each registers its own service, so all six appear separately in the
+Glyph Toys list and the Glyph button cycles between them.
 
-The site's panel is 25x25. The (4a) Pro is **13x13**, so the renderer
-asks `Common.getDeviceMatrixLength()` at runtime and sizes itself; the
+| Toy | What it draws |
+| --- | --- |
+| **Radar** | Polar rings and cross hairs under a sweeping arm, with contacts that flare as it passes. From the site hero. |
+| **Equaliser** | Sixteen bars radiating from a hub, each its own detuned oscillator. |
+| **Orbit** | Two counter rotating rings of beads that brighten crossing the top. |
+| **Waveform** | A closed loop deformed by layered sines, breathing. |
+| **Pulse** | Rings expanding from the centre and fading at the rim, like sonar. Built for 13x13. |
+| **Rain** | Columns falling with trailing tails, each at its own speed. Built for 13x13. |
+
+Every renderer asks `Common.getDeviceMatrixLength()` at runtime, so the
 same code fills a Phone (3) panel at 25x25 without changes.
 
-Note the (4a) Pro is AOD-only and has no Glyph Touch, so the toy draws
-but does not respond to the Glyph button.
+### Drawing at 13x13
+
+A 13 wide panel gives about six pixels of radius, so the site's designs
+do not survive a straight scale down: three rings merge into one, 48
+equaliser bars become a filled disc, and hard on/off pixels make shapes
+jump rather than move. `Paint13` rasterises dots, lines and rings with
+sub pixel coverage and a half pixel feather, which buys smooth motion
+and round curves from a very small grid. Element counts come down to
+what stays separable, and every design is kept inside the circular clip
+so nothing is silently cut off.
+
+See `tools/` for the standalone checks that verify this.
+
+Note the (4a) Pro is AOD-only and has no Glyph Touch, so the toys draw
+and the Glyph button cycles between them, but they take no other input.
+Each toy slows to 5fps on always-on display to stay cheap.
 
 ## Install it
 
@@ -58,18 +79,22 @@ adb install -r app/build/outputs/apk/release/app-release.apk
 1. Install the APK.
 2. Settings, **Glyph Interface**, **Glyph Toys**.
 3. Tap the icon top left to manage toys.
-4. Find **Radar** and add it to the active list.
-5. Hold the Glyph button on the back to cycle to it.
+4. Add any of **Radar**, **Equaliser**, **Orbit**, **Waveform**,
+   **Pulse** or **Rain** to the active list.
+5. Hold the Glyph button on the back to cycle between them.
 
-Opening the app itself only shows a status line; the toy runs from the
-Glyph Toys list, not from the launcher icon.
+Opening the app itself does not drive the panel; the toys run from the
+Glyph Toys list. The app reports whether each link in the chain works
+and previews every toy on the front screen, which is the quickest way
+to tell a broken animation from a broken Glyph connection.
 
 ## Status
 
-Builds clean and signed, the toy service is present in the shipped
-manifest with the right `com.nothing.glyph.TOY` filter, and the
-renderer was verified frame by frame against a simulated 13x13 panel.
+Builds clean and signed, all six toy services are present in the
+shipped manifest with the right `com.nothing.glyph.TOY` filter, and
+every renderer passes the checks in `tools/` against a simulated 13x13
+panel: never blank, never frozen, nothing clipped by the dial.
 
 It has **not been run on a phone**, so first run may still need
-fixing. If the toy appears in the list but the panel stays dark,
-`adb logcat -s RadarToy GlyphMatrixManager` is the place to look.
+fixing. If a toy appears in the list but the panel stays dark,
+`adb logcat -s GlyphToy GlyphMatrixManager` is the place to look.

@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#000000"
-    android:padding="28dp">
+    android:padding="24dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -18,21 +18,40 @@
             android:lineSpacingMultiplier="1.4"
             android:text="@string/status_checking"
             android:textColor="#FFFFFF"
-            android:textSize="13sp" />
+            android:textSize="12sp" />
 
-        <!-- Draws the same frames the panel would, so the renderer can
-             be told apart from the Glyph connection when it fails. -->
+        <!-- Draws the same frames the panel would, so a broken
+             renderer can be told apart from a broken connection. -->
         <com.adityasingh.glyph.MatrixPreview
             android:id="@+id/preview"
             android:layout_width="match_parent"
-            android:layout_height="300dp"
-            android:layout_marginTop="28dp" />
+            android:layout_height="280dp"
+            android:layout_marginTop="22dp" />
 
         <TextView
-            android:id="@+id/preview_label"
+            android:id="@+id/toy_label"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="14dp"
+            android:layout_marginTop="12dp"
+            android:fontFamily="monospace"
+            android:gravity="center"
+            android:letterSpacing="0.2"
+            android:textColor="#FFFFFF"
+            android:textSize="14sp" />
+
+        <!-- One button per toy, filled in at runtime from the same
+             table the services use, so the list cannot drift. -->
+        <LinearLayout
+            android:id="@+id/picker"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="18dp"
+            android:orientation="vertical" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
             android:fontFamily="monospace"
             android:text="@string/preview_label"
             android:textColor="#8F8F8F"

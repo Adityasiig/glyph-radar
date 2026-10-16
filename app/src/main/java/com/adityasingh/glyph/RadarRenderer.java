@@ -1,109 +1,72 @@
 package com.adityasingh.glyph;
 
 /**
- * The portfolio's hero radar, rendered for the Glyph Matrix.
+ * The portfolio's hero radar: polar rings, a sweeping arm with a
+ * fading trail, and blips that flare as the arm crosses them.
  *
- * This is a direct port of the canvas renderer on the website: polar
- * rings, a rotating arm with a fading trail, and blips that light as
- * the arm passes. The only change is resolution. The site draws 25x25;
- * the Phone (4a) Pro panel is 13x13, so the ring count drops from
- * three to two and the blips move inward to stay on the face.
+ * The site draws three rings on a large canvas. Two is the most that
+ * stays separable at 13x13, so the middle one is dropped rather than
+ * letting them merge into a smear.
  */
-public final class RadarRenderer {
+public final class RadarRenderer implements Renderer {
 
     private static final float TAU = (float) (Math.PI * 2);
-    /** The SDK takes 0..255 per pixel. */
-    private static final int MAX = 255;
-
-    /** One full revolution, matching the 0.9 rad/s of the web version. */
     private static final float SWEEP_RATE = 0.9f;
-
     /** How far behind the arm the trail reaches, in radians. */
-    private static final float TRAIL = 1.6f;
+    private static final float TRAIL = 1.7f;
 
     /** Blips as {radiusFraction, bearingRadians}, as on the site. */
     private static final float[][] BLIPS = {
-            {0.70f, 1.1f}, {0.45f, 3.0f}, {0.85f, 4.4f}, {0.30f, 5.6f}
+            {0.72f, 1.1f}, {0.46f, 3.0f}, {0.86f, 4.4f}, {0.32f, 5.6f}
     };
 
-    /** 13 on the Phone (4a) Pro, 25 on the Phone (3). */
-    private final int size;
-    private final int[] pixels;
+    private final Paint13 p;
 
     public RadarRenderer(int size) {
-        this.size = size;
-        this.pixels = new int[size * size];
+        this.p = new Paint13(size);
     }
 
-    /**
-     * Renders one frame.
-     *
-     * @param tSeconds elapsed time; the only state the animation needs
-     * @return a size*size array of 0..255 brightnesses, row-major
-     */
-    public int[] render(float tSeconds) {
-        final float c = (size - 1) / 2f;
-        final float maxR = c;
-        final float sweep = (tSeconds * SWEEP_RATE) % TAU;
+    @Override
+    public int[] render(float t) {
+        p.clear();
+        float c = p.mid(), R = c;
+        float sweep = (t * SWEEP_RATE) % TAU;
 
-        for (int y = 0; y < size; y++) {
-            for (int x = 0; x < size; x++) {
-                float dx = x - c, dy = y - c;
-                float dist = (float) Math.hypot(dx, dy);
+        // The dial: two rings plus cross hairs, dim enough to sit
+        // under the sweep but bright enough to survive it.
+        p.ring(c, c, R, 0.22f, 0.3f);
+        p.ring(c, c, R * 0.5f, 0.22f, 0.25f);
+        p.line(c - R, c, c + R, c, 0.18f, 0.2f);
+        p.line(c, c - R, c, c + R, 0.18f, 0.2f);
 
-                // Outside the dial face stays dark.
-                if (dist > maxR + 0.5f) {
-                    pixels[y * size + x] = 0;
-                    continue;
-                }
+        // The trail, as spokes fading behind the arm. Squared falloff
+        // keeps the tail dim so the dial stays readable through it.
+        for (int i = 1; i <= 12; i++) {
+            float k = 1f - i / 12f;
+            float ang = sweep - (i / 12f) * TRAIL;
+            p.line(c, c,
+                    c + (float) Math.cos(ang) * R,
+                    c + (float) Math.sin(ang) * R,
+                    0.25f, k * k * 0.6f);
+        }
+        // The arm itself.
+        p.line(c, c,
+                c + (float) Math.cos(sweep) * R,
+                c + (float) Math.sin(sweep) * R,
+                0.28f, 1f);
 
-                // Grid: two concentric rings plus cross hairs, so the
-                // face reads as an instrument when the arm is away.
-                // The web version separates these with colour on a big
-                // canvas; a 13x13 monochrome panel only has brightness,
-                // so the steps have to be far apart to survive at all.
-                float v = 0.0f;
-                for (int r = 1; r <= 2; r++) {
-                    float ringR = maxR * r / 2f;
-                    if (Math.abs(dist - ringR) < 0.5f) v = Math.max(v, 0.30f);
-                }
-                if (Math.abs(dx) < 0.5f || Math.abs(dy) < 0.5f) v = Math.max(v, 0.22f);
-
-                // The sweep: brightest at the arm, fading behind it.
-                // Squared falloff keeps the tail dim so the rings stay
-                // legible through it, while the arm head still peaks.
-                if (dist > 0.6f) {
-                    float ang = (float) Math.atan2(dy, dx);
-                    float behind = sweep - ang;
-                    behind = ((behind % TAU) + TAU) % TAU;
-                    if (behind < TRAIL) {
-                        float k = 1f - behind / TRAIL;
-                        v = Math.max(v, k * k);
-                    }
-                }
-
-                pixels[y * size + x] = Math.round(Math.min(v, 1f) * MAX);
-            }
+        // Contacts, holding a little longer than the trail so one
+        // stays readable after the arm has moved on.
+        for (float[] b : BLIPS) {
+            float behind = ((sweep - b[1]) % TAU + TAU) % TAU;
+            float flare = Math.max(0f, 1f - behind / (TRAIL * 1.5f));
+            p.dot(c + (float) Math.cos(b[1]) * R * b[0],
+                    c + (float) Math.sin(b[1]) * R * b[0],
+                    0.35f + flare * 0.45f,
+                    0.2f + flare * 0.8f);
         }
 
-        // Blips sit on top, flaring as the arm crosses their bearing.
-        for (float[] blip : BLIPS) {
-            float bx = c + (float) Math.cos(blip[1]) * maxR * blip[0];
-            float by = c + (float) Math.sin(blip[1]) * maxR * blip[0];
-            int px = Math.round(bx), py = Math.round(by);
-            if (px < 0 || px >= size || py < 0 || py >= size) continue;
-
-            float behind = sweep - blip[1];
-            behind = ((behind % TAU) + TAU) % TAU;
-            // Blips hold longer than the trail so a contact stays
-            // readable for a moment after the arm has moved on.
-            float flare = Math.max(0f, 1f - behind / (TRAIL * 1.6f));
-
-            int lit = Math.round((0.18f + flare * 0.82f) * MAX);
-            int idx = py * size + px;
-            if (lit > pixels[idx]) pixels[idx] = lit;
-        }
-
-        return pixels;
+        p.clipToCircle();
+        return p.out();
     }
 }
