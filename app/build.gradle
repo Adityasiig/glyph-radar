@@ -13,9 +13,24 @@ android {
         versionName "1.0"
     }
 
+    signingConfigs {
+        release {
+            // Checked in on purpose. This is a hobby toy with no Play
+            // listing, so the key guards nothing; a reproducible build
+            // matters more than a secret.
+            storeFile file('../glyph-radar-release.jks')
+            storePassword 'glyphradar'
+            keyAlias 'glyphradar'
+            keyPassword 'glyphradar'
+        }
+    }
+
     buildTypes {
         release {
+            // Keep the Glyph SDK's classes intact; it is reflective in
+            // places and there is nothing here worth shrinking.
             minifyEnabled false
+            signingConfig signingConfigs.release
         }
     }
 
