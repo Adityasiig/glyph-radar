@@ -43,17 +43,17 @@
              six show up in Glyph Toys from this single app. -->
 
         <service
-            android:name=".RadarToyService"
+            android:name=".BarsToyService"
             android:exported="true">
             <intent-filter>
                 <action android:name="com.nothing.glyph.TOY" />
             </intent-filter>
             <meta-data
                 android:name="com.nothing.glyph.toy.name"
-                android:resource="@string/toy_radar" />
+                android:resource="@string/toy_bars" />
             <meta-data
                 android:name="com.nothing.glyph.toy.image"
-                android:resource="@drawable/toy_radar" />
+                android:resource="@drawable/toy_bars" />
             <!-- The (4a) Pro is AOD-only; it has no Glyph Touch. -->
             <meta-data
                 android:name="com.nothing.glyph.toy.aod_support"
@@ -61,68 +61,68 @@
         </service>
 
         <service
-            android:name=".EqualiserToyService"
+            android:name=".BloomToyService"
             android:exported="true">
             <intent-filter>
                 <action android:name="com.nothing.glyph.TOY" />
             </intent-filter>
             <meta-data
                 android:name="com.nothing.glyph.toy.name"
-                android:resource="@string/toy_equaliser" />
+                android:resource="@string/toy_bloom" />
             <meta-data
                 android:name="com.nothing.glyph.toy.image"
-                android:resource="@drawable/toy_equaliser" />
+                android:resource="@drawable/toy_bloom" />
             <meta-data
                 android:name="com.nothing.glyph.toy.aod_support"
                 android:value="1" />
         </service>
 
         <service
-            android:name=".OrbitToyService"
+            android:name=".ScanToyService"
             android:exported="true">
             <intent-filter>
                 <action android:name="com.nothing.glyph.TOY" />
             </intent-filter>
             <meta-data
                 android:name="com.nothing.glyph.toy.name"
-                android:resource="@string/toy_orbit" />
+                android:resource="@string/toy_scan" />
             <meta-data
                 android:name="com.nothing.glyph.toy.image"
-                android:resource="@drawable/toy_orbit" />
+                android:resource="@drawable/toy_scan" />
             <meta-data
                 android:name="com.nothing.glyph.toy.aod_support"
                 android:value="1" />
         </service>
 
         <service
-            android:name=".WaveformToyService"
+            android:name=".HeartToyService"
             android:exported="true">
             <intent-filter>
                 <action android:name="com.nothing.glyph.TOY" />
             </intent-filter>
             <meta-data
                 android:name="com.nothing.glyph.toy.name"
-                android:resource="@string/toy_waveform" />
+                android:resource="@string/toy_heart" />
             <meta-data
                 android:name="com.nothing.glyph.toy.image"
-                android:resource="@drawable/toy_waveform" />
+                android:resource="@drawable/toy_heart" />
             <meta-data
                 android:name="com.nothing.glyph.toy.aod_support"
                 android:value="1" />
         </service>
 
         <service
-            android:name=".PulseToyService"
+            android:name=".SpinToyService"
             android:exported="true">
             <intent-filter>
                 <action android:name="com.nothing.glyph.TOY" />
             </intent-filter>
             <meta-data
                 android:name="com.nothing.glyph.toy.name"
-                android:resource="@string/toy_pulse" />
+                android:resource="@string/toy_spin" />
             <meta-data
                 android:name="com.nothing.glyph.toy.image"
-                android:resource="@drawable/toy_pulse" />
+                android:resource="@drawable/toy_spin" />
             <meta-data
                 android:name="com.nothing.glyph.toy.aod_support"
                 android:value="1" />

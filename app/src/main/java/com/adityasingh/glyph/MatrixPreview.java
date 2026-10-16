@@ -26,7 +26,8 @@ public class MatrixPreview extends View {
 
     public MatrixPreview(Context context, AttributeSet attrs) {
         super(context, attrs);
-        renderer = new RadarRenderer(size);
+        // Something to draw before the activity picks a toy.
+        renderer = Toys.ALL[0].factory.create(size);
     }
 
     /** Switches which toy is previewed, restarting its clock. */

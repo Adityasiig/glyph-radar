@@ -1,42 +1,52 @@
 public class Chk {
-    static String[] N={"RADAR","EQUALISER","ORBIT","WAVEFORM","PULSE","RAIN"};
-    // Radar's dial ring and Rain's falling columns are meant to reach
-    // the rim; everything else touching it means a clipped shape.
-    static boolean[] RIM_OK={true,false,false,false,false,true};
+    static String[] N={"BARS","BLOOM","SCAN","HEART","SPIN","RAIN"};
+    // The heart is deliberately still between beats, so repeated frames
+    // are the design rather than a stutter. Everything else should move
+    // on most frames at the service's ~11fps. A single repeated frame
+    // between whole pixel steps is unavoidable and invisible; what
+    // matters is that no design stalls for several frames together,
+    // which is what the run length check below catches.
+    static boolean[] STILL_OK={false,false,false,true,false,false};
+
     static Renderer mk(int i,int s){switch(i){
-        case 0:return new RadarRenderer(s);case 1:return new EqualiserRenderer(s);
-        case 2:return new OrbitRenderer(s);case 3:return new WaveformRenderer(s);
-        case 4:return new PulseRenderer(s);default:return new RainRenderer(s);}}
+        case 0:return new BarsRenderer(s);case 1:return new BloomRenderer(s);
+        case 2:return new ScanRenderer(s);case 3:return new HeartRenderer(s);
+        case 4:return new SpinRenderer(s);default:return new RainRenderer(s);}}
     public static void main(String[] a){
-        int S=13; float c=(S-1)/2f; boolean bad=false;
+        int S=13; boolean bad=false;
         for(int i=0;i<6;i++){
-            // Sweep 8s of animation; track whether any lit pixel ever lands
-            // on the clip boundary ring, which means a shape was cut off.
-            int edgeHits=0, blankFrames=0, staticFrames=0;
-            int[] prev=null; int minLit=99999,maxLit=0;
-            for(int f=0;f<160;f++){
-                float t=f*0.05f;
-                int[] px=mk(i,S).render(t);
-                int lit=0;
-                for(int y=0;y<S;y++)for(int x=0;x<S;x++){
-                    int v=px[y*S+x]; if(v>40)lit++;
-                    double d=Math.hypot(x-c,y-c);
-                    // A bright pixel in the outermost half-pixel band
-                    // means the design is pressed against the clip.
-                    if(v>150 && d>c-0.25) edgeHits++;
+            Renderer r=mk(i,S);
+            int blank=0, frozen=0, minBright=99999, maxBright=0, greyish=0;
+            int run=0, maxRun=0;
+            int[] prev=null;
+            // Sample at the rate the service actually draws.
+            for(int f=0;f<200;f++){
+                float t=f*0.09f;
+                int[] px=r.render(t);
+                int bright=0, mids=0;
+                for(int v:px){
+                    if(v>60) bright++;
+                    // Count pixels stuck between levels: at this size a
+                    // half lit pixel reads as mud, not as shading.
+                    if(v>10 && v<=60) mids++;
                 }
-                minLit=Math.min(minLit,lit); maxLit=Math.max(maxLit,lit);
-                if(lit==0) blankFrames++;
-                if(prev!=null){boolean same=true;
-                    for(int k=0;k<px.length;k++) if(Math.abs(px[k]-prev[k])>6){same=false;break;}
-                    if(same) staticFrames++;}
+                minBright=Math.min(minBright,bright); maxBright=Math.max(maxBright,bright);
+                if(bright==0) blank++;
+                if(mids>bright*2 && bright<12) greyish++;
+                if(prev!=null){
+                    boolean same=true;
+                    for(int k=0;k<px.length;k++) if(px[k]!=prev[k]){same=false;break;}
+                    if(same){ frozen++; run++; maxRun=Math.max(maxRun,run); } else run=0;
+                }
                 prev=px.clone();
             }
-            boolean ok = blankFrames==0 && staticFrames<8 && minLit>4
-                    && (RIM_OK[i] || edgeHits<40);
+            // A good 13x13 design is never blank, keeps moving, and keeps
+            // a solid core of bright pixels rather than a grey haze.
+            boolean ok = blank==0 && minBright>=6 && greyish<20
+                    && (STILL_OK[i] || maxRun<=2);
             if(!ok) bad=true;
-            System.out.printf("%-10s lit=%d..%d blank=%d static=%d edge=%d  %s%n",
-                N[i],minLit,maxLit,blankFrames,staticFrames,edgeHits, ok?"ok":"<<< CHECK");
+            System.out.printf("%-7s bright=%d..%d blank=%d stall=%d(max %d) muddy=%d  %s%n",
+                N[i],minBright,maxBright,blank,frozen,maxRun,greyish, ok?"ok":"<<< CHECK");
         }
         System.out.println(bad?"\nFAIL":"\nALL PASS");
     }

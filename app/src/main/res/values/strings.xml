@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Glyph Radar</string>
+    <string name="app_name">Glyph Toys</string>
 
     <!-- Shown in the Glyph Toys picker, one per service. -->
-    <string name="toy_radar">Radar</string>
-    <string name="toy_equaliser">Equaliser</string>
-    <string name="toy_orbit">Orbit</string>
-    <string name="toy_waveform">Waveform</string>
-    <string name="toy_pulse">Pulse</string>
+    <string name="toy_bars">Bars</string>
+    <string name="toy_bloom">Bloom</string>
+    <string name="toy_scan">Scan</string>
+    <string name="toy_heart">Heart</string>
+    <string name="toy_spin">Spin</string>
     <string name="toy_rain">Rain</string>
 
     <string name="status_checking">Checking…</string>
