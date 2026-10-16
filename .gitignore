@@ -1,0 +1,10 @@
+*.iml
+.gradle/
+.idea/
+build/
+local.properties
+
+# Nothing's SDK licence forbids redistribution (clause 1c).
+# Fetch it from the GlyphMatrix Developer Kit instead.
+app/libs/*.aar
+app/libs/*.jar

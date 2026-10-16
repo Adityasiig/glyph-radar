@@ -1,0 +1,44 @@
+plugins { id 'com.android.application' }
+
+android {
+    namespace 'com.adityasingh.glyph'
+    compileSdk 34
+
+    defaultConfig {
+        applicationId "com.adityasingh.glyph"
+        // The Glyph SDK needs Android 14 or newer.
+        minSdk 34
+        targetSdk 34
+        versionCode 1
+        versionName "1.0"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+}
+
+configurations.all {
+    resolutionStrategy {
+        // The SDK pulls kotlin-stdlib-jdk7/jdk8 1.6.21, whose classes
+        // were folded into kotlin-stdlib 1.8+. Force one version so
+        // they do not collide at dex time.
+        force 'org.jetbrains.kotlin:kotlin-stdlib:1.8.22'
+        force 'org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.22'
+        force 'org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.22'
+    }
+}
+
+dependencies {
+    // Drop Nothing's KetchumSDK_Community_20250109.jar into app/libs/.
+    // It is not published to Maven, so it has to be vendored by hand.
+    implementation fileTree(dir: 'libs', include: ['*.jar', '*.aar'])
+    implementation 'androidx.appcompat:appcompat:1.7.0'
+}

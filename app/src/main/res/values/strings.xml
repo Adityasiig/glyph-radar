@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Glyph Radar</string>
+    <string name="toy_name">Radar</string>
+    <string name="status_connecting">Add \"Radar\" in Settings, Glyph Interface, Glyph Toys.</string>
+    <string name="status_unsupported">Needs a Nothing Phone (4a) Pro or Phone (3).</string>
+    <!-- Replace with the key issued for this package from nothing.tech. -->
+    <string name="nothing_api_key">REPLACE_WITH_YOUR_NOTHING_API_KEY</string>
+</resources>

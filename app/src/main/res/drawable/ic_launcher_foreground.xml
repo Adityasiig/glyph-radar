@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- The same glyph strip as the site favicon: stepped bars, one red dot. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M34,40 h40 a3,3 0 0 1 0,6 h-40 a3,3 0 0 1 0,-6 z" />
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M34,51 h22 a3,3 0 0 1 0,6 h-22 a3,3 0 0 1 0,-6 z" />
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M34,62 h31 a3,3 0 0 1 0,6 h-31 a3,3 0 0 1 0,-6 z" />
+    <path
+        android:fillColor="#D71921"
+        android:pathData="M68,48 m-6,0 a6,6 0 1,0 12,0 a6,6 0 1,0 -12,0" />
+</vector>
