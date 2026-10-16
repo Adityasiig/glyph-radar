@@ -18,6 +18,9 @@ public final class RadarRenderer {
     /** One full revolution, matching the 0.9 rad/s of the web version. */
     private static final float SWEEP_RATE = 0.9f;
 
+    /** How far behind the arm the trail reaches, in radians. */
+    private static final float TRAIL = 1.6f;
+
     /** Blips as {radiusFraction, bearingRadians}, as on the site. */
     private static final float[][] BLIPS = {
             {0.70f, 1.1f}, {0.45f, 3.0f}, {0.85f, 4.4f}, {0.30f, 5.6f}
@@ -54,22 +57,28 @@ public final class RadarRenderer {
                     continue;
                 }
 
-                // Faint grid: two concentric rings plus cross hairs, so
-                // the face reads as an instrument when the arm is away.
-                float v = 0.06f;
+                // Grid: two concentric rings plus cross hairs, so the
+                // face reads as an instrument when the arm is away.
+                // The web version separates these with colour on a big
+                // canvas; a 13x13 monochrome panel only has brightness,
+                // so the steps have to be far apart to survive at all.
+                float v = 0.0f;
                 for (int r = 1; r <= 2; r++) {
                     float ringR = maxR * r / 2f;
-                    if (Math.abs(dist - ringR) < 0.5f) v = Math.max(v, 0.16f);
+                    if (Math.abs(dist - ringR) < 0.5f) v = Math.max(v, 0.30f);
                 }
-                if (Math.abs(dx) < 0.5f || Math.abs(dy) < 0.5f) v = Math.max(v, 0.14f);
+                if (Math.abs(dx) < 0.5f || Math.abs(dy) < 0.5f) v = Math.max(v, 0.22f);
 
                 // The sweep: brightest at the arm, fading behind it.
+                // Squared falloff keeps the tail dim so the rings stay
+                // legible through it, while the arm head still peaks.
                 if (dist > 0.6f) {
                     float ang = (float) Math.atan2(dy, dx);
                     float behind = sweep - ang;
                     behind = ((behind % TAU) + TAU) % TAU;
-                    if (behind < 1.6f) {
-                        v = Math.max(v, (1f - behind / 1.6f) * 0.95f);
+                    if (behind < TRAIL) {
+                        float k = 1f - behind / TRAIL;
+                        v = Math.max(v, k * k);
                     }
                 }
 
@@ -86,9 +95,11 @@ public final class RadarRenderer {
 
             float behind = sweep - blip[1];
             behind = ((behind % TAU) + TAU) % TAU;
-            float flare = Math.max(0f, 1f - behind / 1.5f);
+            // Blips hold longer than the trail so a contact stays
+            // readable for a moment after the arm has moved on.
+            float flare = Math.max(0f, 1f - behind / (TRAIL * 1.6f));
 
-            int lit = Math.round((0.12f + flare * 0.88f) * MAX);
+            int lit = Math.round((0.18f + flare * 0.82f) * MAX);
             int idx = py * size + px;
             if (lit > pixels[idx]) pixels[idx] = lit;
         }
