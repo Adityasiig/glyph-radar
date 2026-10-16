@@ -1,19 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#000000"
-    android:gravity="center"
-    android:orientation="vertical"
-    android:padding="32dp">
+    android:padding="28dp">
 
-    <TextView
-        android:id="@+id/status"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fontFamily="monospace"
-        android:letterSpacing="0.1"
-        android:text="@string/status_connecting"
-        android:textColor="#FFFFFF"
-        android:textSize="14sp" />
-</LinearLayout>
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/status"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="monospace"
+            android:lineSpacingMultiplier="1.4"
+            android:text="@string/status_checking"
+            android:textColor="#FFFFFF"
+            android:textSize="13sp" />
+
+        <!-- Draws the same frames the panel would, so the renderer can
+             be told apart from the Glyph connection when it fails. -->
+        <com.adityasingh.glyph.MatrixPreview
+            android:id="@+id/preview"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:layout_marginTop="28dp" />
+
+        <TextView
+            android:id="@+id/preview_label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="14dp"
+            android:fontFamily="monospace"
+            android:text="@string/preview_label"
+            android:textColor="#8F8F8F"
+            android:textSize="11sp" />
+    </LinearLayout>
+</ScrollView>
