@@ -1,6 +1,6 @@
 # Glyph Toys
 
-Thirteen Glyph Toys for the Nothing Phone (4a) Pro, in one app, drawn
+Twelve Glyph Toys for the Nothing Phone (4a) Pro, in one app, drawn
 for a 13x13 panel rather than scaled down to one.
 
 ## About Dot HUB
@@ -15,7 +15,7 @@ system Glyph Toys list alongside anything Dot HUB installed.
 
 ## The toys
 
-Each registers its own service, so all thirteen appear separately in the
+Each registers its own service, so all twelve appear separately in the
 Glyph Toys list and the Glyph button cycles between them. Add only the
 ones you want; the list is yours to curate.
 
@@ -41,12 +41,6 @@ should not be shouting:
 | **Wave** | One smooth curve rolling across, a single pixel per column |
 | **Corners** | Four brackets easing in and out, like a lens focusing |
 | **Drift** | Seven points drifting and fading on their own cycles |
-
-And one that is just a cat:
-
-| Toy | What it draws |
-| --- | --- |
-| **Cat** | A cat sitting in profile, flicking its tail |
 
 ## Why these, and not the website's instruments
 
@@ -75,9 +69,9 @@ between steps, so 20fps was sending the same frame twice; the service
 now draws at ~11fps and spends less power doing it.
 
 Every design is still resolution independent: each works off the panel
-width directly, except the two bitmaps, `Heart` and `Cat`, which scale
-by a whole number, so a 25x25 Phone (3) panel gets a crisp double size
-drawing rather than a blurry stretched one.
+width directly, except `Heart`, which scales its bitmap by a whole
+number, so a 25x25 Phone (3) panel gets a crisp double size heart
+rather than a blurry stretched one.
 
 The quiet set leans on one more constraint worth naming. A curve has
 to stay connected pixel to pixel or it reads as scattered dots, and
@@ -87,17 +81,10 @@ shows half a wavelength and bridges any remaining gap explicitly.
 `Clock` steps along each hand's angle and rounds, rather than
 rasterising a line, so a hand is a connected run at every angle.
 
-Shading was tried on `Cat` and abandoned. Banding the body by
-brightness to suggest depth reads worse at this size, not better: the
-dim bands look like the shape is fading out, and the outline that
-actually carries the recognition gets weaker. A flat silhouette wins.
-
-What did fix the cat was designing the shape as a vector drawing at
-26x scale and downsampling by area coverage, instead of guessing
-pixels in a text editor. The head to haunch ratio and the taper of
-the neck then come out of a real curve. The ears are the exception:
-about two pixels each, below what survives downsampling, so they are
-stamped on afterwards.
+A cat was tried and dropped. Several passes at it, flat and shaded,
+hand placed and downsampled from a vector, and none of them read as a
+cat on a 13x13 panel. Recognisable animals need more pixels than this
+has; abstract motion does not, which is what the rest of the set is.
 
 See `tools/` for the standalone checks that verify all of this.
 
@@ -146,7 +133,7 @@ to tell a broken animation from a broken Glyph connection.
 
 ## Status
 
-Builds clean and signed, all thirteen toy services are present in the
+Builds clean and signed, all twelve toy services are present in the
 shipped manifest with the right `com.nothing.glyph.TOY` filter, and
 every renderer passes the checks in `tools/` at both 13x13 and 25x25:
 never blank, never muddy, and never stalling except where holding

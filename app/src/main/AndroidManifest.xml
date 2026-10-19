@@ -247,21 +247,5 @@
                 android:value="1" />
         </service>
 
-        <service
-            android:name=".CatToyService"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="com.nothing.glyph.TOY" />
-            </intent-filter>
-            <meta-data
-                android:name="com.nothing.glyph.toy.name"
-                android:resource="@string/toy_cat" />
-            <meta-data
-                android:name="com.nothing.glyph.toy.image"
-                android:resource="@drawable/toy_cat" />
-            <meta-data
-                android:name="com.nothing.glyph.toy.aod_support"
-                android:value="1" />
-        </service>
     </application>
 </manifest>

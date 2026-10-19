@@ -36,8 +36,7 @@ final class Toys {
             new Toy(R.string.toy_orbit, OrbitRenderer::new),
             new Toy(R.string.toy_wave, WaveRenderer::new),
             new Toy(R.string.toy_corners, CornersRenderer::new),
-            new Toy(R.string.toy_drift, DriftRenderer::new),
-            new Toy(R.string.toy_cat, CatRenderer::new)
+            new Toy(R.string.toy_drift, DriftRenderer::new)
     };
 
     private Toys() {
