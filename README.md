@@ -46,7 +46,7 @@ And one that is just a cat:
 
 | Toy | What it draws |
 | --- | --- |
-| **Cat** | A cat sitting in profile, shaded, flicking its tail |
+| **Cat** | A cat sitting in profile, flicking its tail |
 
 ## Why these, and not the website's instruments
 
@@ -87,13 +87,17 @@ shows half a wavelength and bridges any remaining gap explicitly.
 `Clock` steps along each hand's angle and rounds, rather than
 rasterising a line, so a hand is a connected run at every angle.
 
-One exception proves the rule about shading. `Cat` and `Heart` are
-bitmaps of a recognisable thing rather than abstract motion, and there
-flat silhouettes read as lumps. They use the brightness bands as
-actual shading, dim haunch, brighter chest, brightest head, which is
-what separates the parts of the animal and gives the form depth. The
-difference between mud and shading is whether the levels mean
-something; a ramp across an edge is mud, a band per body part is not.
+Shading was tried on `Cat` and abandoned. Banding the body by
+brightness to suggest depth reads worse at this size, not better: the
+dim bands look like the shape is fading out, and the outline that
+actually carries the recognition gets weaker. A flat silhouette wins.
+
+What did fix the cat was designing the shape as a vector drawing at
+26x scale and downsampling by area coverage, instead of guessing
+pixels in a text editor. The head to haunch ratio and the taper of
+the neck then come out of a real curve. The ears are the exception:
+about two pixels each, below what survives downsampling, so they are
+stamped on afterwards.
 
 See `tools/` for the standalone checks that verify all of this.
 
