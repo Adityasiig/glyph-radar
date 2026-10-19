@@ -1,7 +1,7 @@
 # Glyph Toys
 
-Six Glyph Toys for the Nothing Phone (4a) Pro, in one app, drawn for a
-13x13 panel rather than scaled down to one.
+Twelve Glyph Toys for the Nothing Phone (4a) Pro, in one app, drawn
+for a 13x13 panel rather than scaled down to one.
 
 ## About Dot HUB
 
@@ -15,8 +15,11 @@ system Glyph Toys list alongside anything Dot HUB installed.
 
 ## The toys
 
-Each registers its own service, so all six appear separately in the
-Glyph Toys list and the Glyph button cycles between them.
+Each registers its own service, so all twelve appear separately in the
+Glyph Toys list and the Glyph button cycles between them. Add only the
+ones you want; the list is yours to curate.
+
+The bold set fills the panel:
 
 | Toy | What it draws |
 | --- | --- |
@@ -26,6 +29,18 @@ Glyph Toys list and the Glyph button cycles between them.
 | **Heart** | A hand placed bitmap heart on a double thump beat |
 | **Spin** | Comets running opposite ways around two square tracks |
 | **Rain** | Columns falling with trailing tails, each at its own speed |
+
+The quiet set is sparser and slower, for when the back of the phone
+should not be shouting:
+
+| Toy | What it draws |
+| --- | --- |
+| **Clock** | The real time: two hands, four quarter marks, nothing else |
+| **Breathe** | One diamond opening and closing on a slow 6 second breath |
+| **Orbit** | A single point tracing a diamond, with a short tail |
+| **Wave** | One smooth curve rolling across, a single pixel per column |
+| **Corners** | Four brackets easing in and out, like a lens focusing |
+| **Drift** | Seven points drifting and fading on their own cycles |
 
 ## Why these, and not the website's instruments
 
@@ -53,10 +68,18 @@ The frame rate dropped with it. Whole pixel motion has nothing to draw
 between steps, so 20fps was sending the same frame twice; the service
 now draws at ~11fps and spends less power doing it.
 
-Every design is still resolution independent. `Bars`, `Scan`, `Spin`
-and `Rain` work off the panel width directly, and `Heart` scales its
-bitmap by a whole number, so a 25x25 Phone (3) panel gets a crisp
-double size heart rather than a blurry stretched one.
+Every design is still resolution independent: each works off the panel
+width directly, except `Heart`, which scales its bitmap by a whole
+number, so a 25x25 Phone (3) panel gets a crisp double size heart
+rather than a blurry stretched one.
+
+The quiet set leans on one more constraint worth naming. A curve has
+to stay connected pixel to pixel or it reads as scattered dots, and
+whether it does is arithmetic, not taste: a full sine wave across 13
+columns puts neighbouring columns three or four rows apart, so `Wave`
+shows half a wavelength and bridges any remaining gap explicitly.
+`Clock` steps along each hand's angle and rounds, rather than
+rasterising a line, so a hand is a connected run at every angle.
 
 See `tools/` for the standalone checks that verify all of this.
 
@@ -95,8 +118,7 @@ adb install -r app/build/outputs/apk/release/app-release.apk
 1. Install the APK.
 2. Settings, **Glyph Interface**, **Glyph Toys**.
 3. Tap the icon top left to manage toys.
-4. Add any of **Bars**, **Bloom**, **Scan**, **Heart**, **Spin** or
-   **Rain** to the active list.
+4. Add whichever toys you want to the active list.
 5. Hold the Glyph button on the back to cycle between them.
 
 Opening the app itself does not drive the panel; the toys run from the
@@ -106,11 +128,11 @@ to tell a broken animation from a broken Glyph connection.
 
 ## Status
 
-Builds clean and signed, all six toy services are present in the
+Builds clean and signed, all twelve toy services are present in the
 shipped manifest with the right `com.nothing.glyph.TOY` filter, and
 every renderer passes the checks in `tools/` at both 13x13 and 25x25:
-never blank, never stalling for more than a frame, never spending more
-pixels on in between values than on lit ones.
+never blank, never muddy, and never stalling except where holding
+still is the design, which is Clock, Breathe and Corners.
 
 It has **not been run on a phone**, so first run may still need
 fixing. If a toy appears in the list but the panel stays dark,
