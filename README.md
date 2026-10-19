@@ -1,6 +1,6 @@
 # Glyph Toys
 
-Twelve Glyph Toys for the Nothing Phone (4a) Pro, in one app, drawn
+Thirteen Glyph Toys for the Nothing Phone (4a) Pro, in one app, drawn
 for a 13x13 panel rather than scaled down to one.
 
 ## About Dot HUB
@@ -15,7 +15,7 @@ system Glyph Toys list alongside anything Dot HUB installed.
 
 ## The toys
 
-Each registers its own service, so all twelve appear separately in the
+Each registers its own service, so all thirteen appear separately in the
 Glyph Toys list and the Glyph button cycles between them. Add only the
 ones you want; the list is yours to curate.
 
@@ -41,6 +41,7 @@ should not be shouting:
 | **Wave** | One smooth curve rolling across, a single pixel per column |
 | **Corners** | Four brackets easing in and out, like a lens focusing |
 | **Drift** | Seven points drifting and fading on their own cycles |
+| **Cat** | A cat sitting in profile, flicking its tail |
 
 ## Why these, and not the website's instruments
 
@@ -128,7 +129,7 @@ to tell a broken animation from a broken Glyph connection.
 
 ## Status
 
-Builds clean and signed, all twelve toy services are present in the
+Builds clean and signed, all thirteen toy services are present in the
 shipped manifest with the right `com.nothing.glyph.TOY` filter, and
 every renderer passes the checks in `tools/` at both 13x13 and 25x25:
 never blank, never muddy, and never stalling except where holding

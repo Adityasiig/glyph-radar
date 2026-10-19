@@ -15,6 +15,7 @@
     <string name="toy_wave">Wave</string>
     <string name="toy_corners">Corners</string>
     <string name="toy_drift">Drift</string>
+    <string name="toy_cat">Cat</string>
 
     <string name="status_checking">Checking…</string>
     <string name="status_connecting">Add these in Settings, Glyph Interface, Glyph Toys, then hold the Glyph button on the back to cycle between them.</string>
