@@ -60,8 +60,8 @@ Count the pixels forming a circle of radius r on this grid and you get
 cannot be spaced evenly, and a rotating arm cannot sweep smoothly: at
 30 degrees it is a staircase that reshuffles on every frame. The panel
 holds 169 pixels total, so there is no room to hide an approximation
-behind resolution, and no room for shading either. A half lit pixel
-does not read as a soft edge at this size, it reads as grey mud.
+behind resolution. Nor is there room to feather an edge: a half lit
+pixel does not read as a soft edge at this size, it reads as grey mud.
 
 So this version drops sub pixel rasterising entirely. `Grid` offers no
 curves and no anti aliasing: pixels are addressed as integers,
