@@ -38,3 +38,35 @@ The stall check allows a single repeated frame, which is unavoidable
 when a design steps in whole pixels and the service draws faster than
 one step per frame. Heart is exempt: it is deliberately still between
 beats.
+
+
+## The quiet set
+
+`CheckQuietRenderers.java` and `PreviewQuietRenderers.java` do the same
+job for the six later toys (Clock, Breathe, Orbit, Wave, Corners,
+Drift). Same recipe, substituting those class names:
+
+```sh
+cp ../tools/CheckQuietRenderers.java C2.java
+cp ../tools/PreviewQuietRenderers.java V2.java
+javac -encoding UTF-8 -d . *.java
+java -cp . C2 13   # and: java -cp . C2 25
+java -cp . V2 13
+```
+
+Two of its thresholds are deliberately relaxed per design, because the
+restraint in these is the point:
+
+- `SPARSE_OK` exempts Orbit and Drift from the lit pixel floor and the
+  mud check. Orbit lays down a faint path on purpose and Drift is a
+  sparse starfield, so a low lit count with a high dim count is correct
+  for them and a fault anywhere else.
+- `STILL_OK` exempts Clock, Breathe and Corners from the stall check.
+  Clock only changes once a minute; the other two hold at the ends of
+  their travel.
+
+Those exemptions were added after the check flagged them, and only
+once each case was confirmed intentional by eye. The one genuine bug it
+caught was Breathe collapsing to a single lit pixel at the bottom of
+each breath, which looked like the toy had died; it now floors at
+radius 1.

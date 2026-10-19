@@ -29,7 +29,14 @@ final class Toys {
             new Toy(R.string.toy_scan, ScanRenderer::new),
             new Toy(R.string.toy_heart, HeartRenderer::new),
             new Toy(R.string.toy_spin, SpinRenderer::new),
-            new Toy(R.string.toy_rain, RainRenderer::new)
+            new Toy(R.string.toy_rain, RainRenderer::new),
+            // The quieter set: fewer lit pixels, slower motion.
+            new Toy(R.string.toy_clock, ClockRenderer::new),
+            new Toy(R.string.toy_breathe, BreatheRenderer::new),
+            new Toy(R.string.toy_orbit, OrbitRenderer::new),
+            new Toy(R.string.toy_wave, WaveRenderer::new),
+            new Toy(R.string.toy_corners, CornersRenderer::new),
+            new Toy(R.string.toy_drift, DriftRenderer::new)
     };
 
     private Toys() {
