@@ -41,6 +41,11 @@ should not be shouting:
 | **Wave** | One smooth curve rolling across, a single pixel per column |
 | **Corners** | Four brackets easing in and out, like a lens focusing |
 | **Drift** | Seven points drifting and fading on their own cycles |
+
+And one that is just a cat:
+
+| Toy | What it draws |
+| --- | --- |
 | **Cat** | A cat sitting in profile, flicking its tail |
 
 ## Why these, and not the website's instruments
@@ -70,9 +75,9 @@ between steps, so 20fps was sending the same frame twice; the service
 now draws at ~11fps and spends less power doing it.
 
 Every design is still resolution independent: each works off the panel
-width directly, except `Heart`, which scales its bitmap by a whole
-number, so a 25x25 Phone (3) panel gets a crisp double size heart
-rather than a blurry stretched one.
+width directly, except the two bitmaps, `Heart` and `Cat`, which scale
+by a whole number, so a 25x25 Phone (3) panel gets a crisp double size
+drawing rather than a blurry stretched one.
 
 The quiet set leans on one more constraint worth naming. A curve has
 to stay connected pixel to pixel or it reads as scattered dots, and
