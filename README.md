@@ -46,7 +46,7 @@ And one that is just a cat:
 
 | Toy | What it draws |
 | --- | --- |
-| **Cat** | A cat sitting in profile, flicking its tail |
+| **Cat** | A cat sitting in profile, shaded, flicking its tail |
 
 ## Why these, and not the website's instruments
 
@@ -86,6 +86,14 @@ columns puts neighbouring columns three or four rows apart, so `Wave`
 shows half a wavelength and bridges any remaining gap explicitly.
 `Clock` steps along each hand's angle and rounds, rather than
 rasterising a line, so a hand is a connected run at every angle.
+
+One exception proves the rule about shading. `Cat` and `Heart` are
+bitmaps of a recognisable thing rather than abstract motion, and there
+flat silhouettes read as lumps. They use the brightness bands as
+actual shading, dim haunch, brighter chest, brightest head, which is
+what separates the parts of the animal and gives the form depth. The
+difference between mud and shading is whether the levels mean
+something; a ramp across an edge is mud, a band per body part is not.
 
 See `tools/` for the standalone checks that verify all of this.
 
